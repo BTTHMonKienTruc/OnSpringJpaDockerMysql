@@ -1,0 +1,23 @@
+version: '3.8'
+
+services: 	
+  mysql:
+    image: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=1234
+      - MYSQL_DATABASE =lab04_jpa
+      - MYSQL_USER =admin
+      - MYSQL_PASSWORD =123456
+    volumes:
+      - mysql-data:/var/opt/mssql
+      - ./lab04_jpa.sql:/docker-entrypoint-initdb.d/init.sql
+  web:
+    image:	bezkoder-app:latest
+    ports:
+      - "8005:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/lab04_jpa?autoReconnect=true&useSSL=false
+    depends_on:
+      - mysql
+volumes:
+  mysql-data:
